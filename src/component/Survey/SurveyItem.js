@@ -1,15 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Dropdown, DropdownButton, Button } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import { useFirestore } from 'react-redux-firebase';
+import { connect } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
 function SurveyItem(props) {
-  const { onClickingEdit, surveyObj } = props;
+  const history = useHistory();
+  const { surveyObj, dispatch } = props;
   const firestore = useFirestore();
 
-  function deleteSurvey() {
-    firestore.delete({ collection: 'surveys', doc: surveyObj.id });
+  function handleTakeSurveyClick() {
+    const action = { 
+      type: "UPDATE_SELECTED",
+      id: surveyObj.id,
+      name: surveyObj.name,
+      authorEmail: surveyObj.authorEmail,
+      question1: surveyObj.question1,
+      answer1: surveyObj.answer1,
+      answer2: surveyObj.answer2,
+      answer3: surveyObj.answer3
+    }
+    props.whereSurveyClicked(action);
+    history.push('/submitsurvey');
+
   }
+
+  
 
   return (
     <Card>
@@ -17,27 +34,7 @@ function SurveyItem(props) {
         <Card.Title>{surveyObj.name} </Card.Title>
       </Card.Header>
       <Card.Body>
-        <p>Question: {surveyObj.question1}</p>
-        <DropdownButton
-          key="secondary"
-          id={`dropdown-variants-secondary`}
-          variant={'secondary'}
-          title={'Answers'}
-          onSelect={function(evt) {
-            console.log(evt);
-          }}
-        >
-          <Dropdown.Item eventKey="1">{surveyObj.answer1}</Dropdown.Item>
-          <Dropdown.Item eventKey="2">{surveyObj.answer2}</Dropdown.Item>
-          <Dropdown.Item eventKey="3">{surveyObj.answer3}</Dropdown.Item>
-        </DropdownButton>
-
-        <Button onClick={deleteSurvey} variant="danger">
-          Delete
-        </Button>
-        <Button variant="info" onClick={onClickingEdit}>
-          Edit
-        </Button>
+        <Button onClick={handleTakeSurveyClick}> Take Survey </Button>
       </Card.Body>
     </Card>
   );
@@ -46,5 +43,13 @@ function SurveyItem(props) {
 SurveyItem.propTypes = {
   onClickingEdit: PropTypes.func
 };
+
+const mapStateToProps = (state) => {
+  return {
+    selectedSurvey: state.selectedSurvey
+  }
+}
+
+SurveyItem = connect(mapStateToProps)(SurveyItem)
 
 export default SurveyItem;

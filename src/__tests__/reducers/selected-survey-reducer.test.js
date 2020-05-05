@@ -8,7 +8,15 @@ describe('selectSurveyReducer', () => {
   test('Should successfully set selectedSurvey', () => {
     const currentState = { 1: { name: 'dan', question1: 'q1', answer1: 'a1', answer2: 'a2', answer3: 'a3' } };
 
-    const action = { type: 'UPDATE_SELECTED', id: 1 };
+    const action = {
+      type: 'UPDATE_SELECTED',
+      id: 1,
+      name: 'dan',
+      question1: 'q1',
+      answer1: 'a1',
+      answer2: 'a2',
+      answer3: 'a3'
+    };
 
     expect(selectSurveyReducer(currentState, action)).toEqual({
       name: 'dan',

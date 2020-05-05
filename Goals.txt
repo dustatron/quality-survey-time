@@ -1,0 +1,12 @@
+*Wednesday*
+- take survey.
+- log that they took a survey.
+- go directly to dashboard after user signs in. 
+- update survey making to be awesome. 
+
+
+*Thursday*
+- deploying. google firebase.
+- data visualization.
+- make pretty.
+- 
